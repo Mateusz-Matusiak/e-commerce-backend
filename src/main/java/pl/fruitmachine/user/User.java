@@ -14,6 +14,7 @@ import java.util.Objects;
 
 
 @Entity
+@Table(name = "app_user")
 @Getter
 @Setter
 @ToString
