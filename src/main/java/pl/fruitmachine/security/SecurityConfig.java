@@ -7,13 +7,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.fruitmachine.filters.CustomAuthenticationFilter;
 import pl.fruitmachine.filters.CustomAuthorizationFilter;
@@ -37,8 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
 
         http.authorizeRequests().antMatchers("/api/v1/login/**").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/users").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/users/**").permitAll();
         http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/v1/roles").hasAnyAuthority("ROLE_MANAGER", "ROLE_ADMIN");
+        http.authorizeRequests().antMatchers("/api/v1/users/manager/**").hasAnyAuthority("ROLE_MANAGER", "ROLE_ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
 
         http.csrf().disable();

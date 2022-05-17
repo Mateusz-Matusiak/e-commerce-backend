@@ -2,12 +2,14 @@ package pl.fruitmachine.user;
 
 
 import lombok.*;
+import org.apache.tomcat.jni.Local;
 import org.hibernate.Hibernate;
 import pl.fruitmachine.user.role.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
@@ -37,6 +39,10 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
+
+    private LocalDate birthDate;
+    private Integer score;
+    private Integer coins;
 
     @Override
     public boolean equals(Object o) {
